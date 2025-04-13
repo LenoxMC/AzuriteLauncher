@@ -1,45 +1,63 @@
 <style class="bodyimg"></style>
 <div class="home-content">
-    <div class="bottom-bar-home">
-        <div class="player-head"></div>
-        <div class="player-role"></div>
-        <div class="player-monnaie"></div>
-        <button class="settings-btn icon-settings" id="settings-btn"></button>
-        <div class="play-element">
-            <button class="play-btn" id="play-btn"></button>
-            <div class="download-content">
-                <div class="text-download" id="text-download"></div>
-                <progress value="0" max="0" class="progress-bar"></progress>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-top">
+            <div class="server-logo">
+                <img class="server-img"/>
             </div>
+        </div>
+        <div class="sidebar-middle">
+            <div class="play-element">
+                <button class="play-btn" id="play-btn">
+                    <i class="play-icon">▶</i>
+                </button>
+                <div class="download-content">
+                    <div class="text-download" id="text-download"></div>
+                    <progress value="0" max="0" class="progress-bar"></progress>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar-bottom">
+            <div class="player-info">
+                <div class="player-head"></div>
+                <div class="player-details">
+                    <div class="player-role"></div>
+                    <div class="player-monnaie"></div>
+                </div>
+            </div>
+            <button class="settings-btn icon-settings" id="settings-btn"></button>
         </div>
     </div>
 
-    <!-- Bannière pour le message d'alerte -->
-    <div class="advert-banner" id="advert-banner" style="display:none;"></div>
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Alert Banner -->
+        <div class="advert-banner" id="advert-banner" style="display:none;"></div>
 
-    <div class="body-home">
-        <div class="news-list"></div>
-        <div class="info-list">
-            <div class="info-item">
-                <div class="server">
-                    <img class="server-img"/>
-                    <div class="server-text">
-                        <div class="name" id="server-name"></div>
-                        <div class="desc" id="server-desc"></div>
-                    </div>
-                    <div class="etat-text">
-                        <div class="text" id="players-connected"></div>
-                        <div class="online off"></div>
-                    </div>
+        <div class="content-grid">
+            <!-- News Section -->
+            <div class="news-section">
+                <h2 class="section-header" id="news-title">                </h2>
+                <div class="news-list"></div>
+            </div>
+
+            <!-- Server Status -->
+            <div class="server-status">
+                <div class="status-indicator">
+                    <div class="online-indicator"></div>
+                    <span class="status-text" id="server-status"></span>
+                </div>
+                <div class="players-count">
+                    <i class="players-icon">👥</i>
+                    <span id="players-count">0</span>
                 </div>
             </div>
-            <div class="info-item">
+
+            <!-- Video Section -->
+            <div class="video-section">
+                <h2 class="section-header" id="video-title"></h2>
                 <div class="ytb">
-                    <div class="ytb-header">
-                        <div class="header-text">
-                            <div class="title-change" id="video-title"></div>
-                        </div>
-                    </div>
                     <div class="video">
                         <div class="youtube-thumbnail">
                             <img class="thumbnail-img" alt="YouTube Thumbnail" />

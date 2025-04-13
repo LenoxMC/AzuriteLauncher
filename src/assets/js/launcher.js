@@ -203,7 +203,7 @@ class Launcher {
     updateRole(account) {
         if (this.config.role && account.user_info.role) {
             const blockRole = document.createElement("div");
-            blockRole.innerHTML = `<div>${t('grade')}: ${account.user_info.role.name}</div>`;
+            blockRole.innerHTML = `<div>${account.user_info.role.name}</div>`;
             document.querySelector('.player-role').appendChild(blockRole);
         } else {
             document.querySelector(".player-role").style.display = "none";
@@ -233,7 +233,6 @@ class Launcher {
             playBtn.style.backgroundColor = "#00bd7a";
             playBtn.style.pointerEvents = "auto";
             playBtn.style.boxShadow = "2px 2px 5px rgba(0, 0, 0, 0.3)";
-            playBtn.textContent = t('play');
         }
     }
 

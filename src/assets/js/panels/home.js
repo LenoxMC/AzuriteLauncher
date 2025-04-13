@@ -36,13 +36,12 @@ class Home {
     }
 
     setStaticTexts() {
-        document.getElementById('play-btn').textContent = t('play');
         document.getElementById('text-download').textContent = t('verification');
-        document.getElementById('server-name').textContent = t('offline');
-        document.getElementById('server-desc').innerHTML = `<span class="red">${t('closed')}</span>`;
+        document.getElementById('server-status').textContent = t('offline');
         document.getElementById('video-title').textContent = t('community_video');
         document.getElementById('play-video-btn').innerHTML = '&#9658;';
         document.getElementById('view-video-btn').textContent = t('view_video');
+        document.getElementById('news-title').textContent = t('news');
     }
 
     async initNews() {
@@ -197,20 +196,19 @@ class Home {
     }
 
     async initStatusServer() {
-        const nameServer = document.querySelector('.server-text .name');
-        const serverMs = document.querySelector('.server-text .desc');
-        const playersConnected = document.querySelector('.etat-text .text');
-        const online = document.querySelector(".etat-text .online");
+        const statusText = document.getElementById('server-status');
+        const playersCount = document.getElementById('players-count');
+        const onlineIndicator = document.querySelector('.online-indicator');
         const serverPing = await new Status(this.config.status.ip, this.config.status.port).getStatus();
 
         if (!serverPing.error) {
-            nameServer.textContent = this.config.status.nameServer;
-            serverMs.innerHTML = `<span class="green">${t('server_online')}</span> - ${serverPing.ms}${t('server_ping')}`;
-            online.classList.toggle("off");
-            playersConnected.textContent = serverPing.playersConnect;
+            statusText.textContent = t('server_online');
+            onlineIndicator.classList.remove('offline');
+            playersCount.textContent = serverPing.playersConnect;
         } else {
-            nameServer.textContent = t('server_unavailable');
-            serverMs.innerHTML = `<span class="red">${t('server_closed')}</span>`;
+            statusText.textContent = t('server_unavailable');
+            onlineIndicator.classList.add('offline');
+            playersCount.textContent = '0';
         }
     }
 
@@ -252,7 +250,7 @@ class Home {
 
     async initAdvert() {
         const advertBanner = document.querySelector('.advert-banner');
-        if (this.config.alert_activate) {
+        if (this.config.alert_activate && this.config.alert_msg && this.config.alert_msg.trim() !== '') {
             const message = this.config.alert_msg;
             const firstParagraph = message.split('</p>')[0] + '</p>';
             const scrollingText = document.createElement('div');

@@ -2,26 +2,50 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
 <div class="settings-content">
     <div class="tabs-settings-btn">
-        <button style="margin-top: 40px;" class="tab-btn-css tab-btn active-tab-btn default-tab-btn" id="accounts-tab"></button>
-        <button class="tab-btn-css tab-btn" id="ram-tab"></button>
-        <button class="tab-btn-css tab-btn" id="launch-tab"></button>
-        <button class="tab-btn-css tab-btn" id="mods-tab"></button>
-        <button class="tab-btn-css tab-btn" id="skin-tab"></button>
-        <button class="tab-btn-css save-tabs-btn" id="save-tab"></button>
+        <button style="margin-top: 40px;" class="tab-btn-css tab-btn active-tab-btn default-tab-btn" id="accounts-tab">
+            <i class="fas fa-user"></i>
+            <span>Comptes</span>
+        </button>
+        <button class="tab-btn-css tab-btn" id="ram-tab">
+            <i class="fas fa-memory"></i>
+            <span>RAM</span>
+        </button>
+        <button class="tab-btn-css tab-btn" id="launch-tab">
+            <i class="fas fa-rocket"></i>
+            <span>Lancement</span>
+        </button>
+        <button class="tab-btn-css tab-btn" id="mods-tab">
+            <i class="fas fa-puzzle-piece"></i>
+            <span>Mods</span>
+        </button>
+        <button class="tab-btn-css tab-btn" id="skin-tab">
+            <i class="fas fa-tshirt"></i>
+            <span>Skin</span>
+        </button>
+        <button class="tab-btn-css save-tabs-btn" id="save-tab">
+            <i class="fas fa-save"></i>
+            <span>Sauvegarder</span>
+        </button>
     </div>
 
     <div class="tabs-settings-content active-tab-content">
         <div class="center-align">
-            <button class="add-account" id="add-account-btn"></button>
+            <button class="add-account" id="add-account-btn">
+                <i class="fas fa-plus"></i>
+                <span>Ajouter un compte</span>
+            </button>
             <div class="accounts"></div>
         </div>
     </div>
 
     <div class="tabs-settings-content">
         <div class="settings-content-scroll">
-            <div class="title-settings" id="ram-title"></div>
+            <div class="title-settings" id="ram-title">Paramètres de la RAM</div>
             <div class="java-settings">
-                <div class="information" id="ram-info"></div>
+                <div class="information" id="ram-info">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Configurez la quantité de RAM allouée au jeu</span>
+                </div>
                 <div class="ram-info">
                     <div class="memory-slider" min="0.5" max="8" step="0.5">
                         <div class="slider-touch-left">
@@ -36,8 +60,8 @@
                     </div>
 
                     <div class="ram-info-block">
-                        <span id="total-ram"></span><br>
-                        <span id="free-ram"></span>
+                        <span id="total-ram"><i class="fas fa-microchip"></i> RAM totale</span><br>
+                        <span id="free-ram"><i class="fas fa-battery-three-quarters"></i> RAM disponible</span>
                     </div>
                 </div>
             </div>
@@ -46,36 +70,62 @@
 
     <div class="tabs-settings-content">
         <div class="center-page">
-            <div class="title-settings" id="launch-title"></div>
+            <div class="title-settings" id="launch-title">Paramètres de lancement</div>
             <div class="java-settings">
                 <div class="information">
-                    <input type="checkbox" class="checkbox-settings" id="launcher-close"><label for="launcher-close"><div class="checkround"></div></label><span id="close-launcher-text"></span></br>
-                    <input type="checkbox" class="checkbox-settings" id="launcher-close-all"><label for="launcher-close-all"><div class="checkround"></div></label><span id="close-all-text"></span></br>
-                    <input type="checkbox" class="checkbox-settings" id="launcher-open"><label for="launcher-open"><div class="checkround"></div></label><span id="open-launcher-text"></span>
+                    <div class="checkbox-container">
+                        <input type="checkbox" class="checkbox-settings" id="launcher-close">
+                        <label for="launcher-close">
+                            <div class="checkround"></div>
+                            <span id="close-launcher-text">Fermer le launcher</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" class="checkbox-settings" id="launcher-close-all">
+                        <label for="launcher-close-all">
+                            <div class="checkround"></div>
+                            <span id="close-all-text">Tout fermer</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" class="checkbox-settings" id="launcher-open">
+                        <label for="launcher-open">
+                            <div class="checkround"></div>
+                            <span id="open-launcher-text">Garder ouvert</span>
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="tabs-settings-content">
-    <div class="settings-content-scroll">
-        <div class="center-page">
-            <div class="title-settings" id="mods-title"></div>
-            <div class="mods-info">
-                <div class="information" id="mods-info"></div>
-                <div class="mods-list" id="mods-list"></div>
+
+    <div class="tabs-settings-content">
+        <div class="settings-content-scroll">
+            <div class="center-page">
+                <div class="title-settings" id="mods-title">Mods optionnels</div>
+                <div class="mods-info">
+                    <div class="information" id="mods-info">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Gérez vos mods optionnels</span>
+                    </div>
+                    <div class="mods-list" id="mods-list"></div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="tabs-settings-content">
-    <div class="player-skin-title title-settings" id="skin-title"></div>
-    <div class="center-page">
-        <div class="skin-container-settings">
-            <iframe frameborder="0" id="skinRender2" class="skin-renderer-settings" style="border: none; width: 319px; height: 221px;" src=""></iframe>
-            <input type="file" id="fileInput" accept="image/png" style="display: none;">  
-            <button id="uploadSkinButton" class="upload-skin-btn"></button>          
+
+    <div class="tabs-settings-content">
+        <div class="player-skin-title title-settings" id="skin-title">Personnalisation du skin</div>
+        <div class="center-page">
+            <div class="skin-container-settings">
+                <div class="skin-preview">
+                    <iframe frameborder="0" id="skinRender2" class="skin-renderer-settings" style="border: none; width: 319px; height: 221px;" src=""></iframe>                </div>
+                <input type="file" id="fileInput" accept="image/png" style="display: none;">  
+                <button id="uploadSkinButton" class="upload-skin-btn">
+                    <i class="fas fa-upload"></i>
+                    <span>Changer de skin</span>
+                </button>          
+            </div>
         </div>
     </div>
-</div>
 </div>

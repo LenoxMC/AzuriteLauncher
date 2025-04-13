@@ -17,9 +17,6 @@ class Login {
     }
 
     setStaticTexts() {
-        document.getElementById('login-title').textContent = t('connect');
-        document.getElementById('web-login-btn').textContent = t('web_login');
-        document.getElementById('cancel-login-btn').textContent = t('cancel');
         document.getElementById('a2f-label').textContent = t('2fa_enabled');
         document.getElementById('a2f-login-btn').textContent = t('play');
         document.getElementById('cancel-a2f-btn').textContent = t('cancel');
@@ -119,8 +116,7 @@ class Login {
     getOnline() {
         console.log(`Initializing Az Panel...`);
         this.loginAzAuth();
-        document.querySelector('.cancel-login').addEventListener("click", () => {
-            document.querySelector(".cancel-login").style.display = "none";
+        document.querySelector('.cancel-mojang').addEventListener("click", () => {
             changePanel("settings");
         });
     }
@@ -140,7 +136,6 @@ class Login {
             cancelMojangBtn: document.querySelector('.cancel-mojang'),
             infoLogin: document.querySelector('.info-login'),
             loginBtn: document.querySelector(".login-btn"),
-            mojangBtn: document.querySelector('.mojang'),
             loginBtn2f: document.querySelector('.login-btn-2f'),
             a2finput: document.querySelector('.a2f'),
             infoLogin2f: document.querySelector('.info-login-2f'),
@@ -173,7 +168,6 @@ class Login {
     }
 
     setupEventListeners(elements, azauth) {
-        elements.mojangBtn.addEventListener("click", () => this.toggleLoginCards("mojang"));
         elements.cancelMojangBtn.addEventListener("click", () => this.toggleLoginCards("default"));
         elements.cancel2f.addEventListener("click", () => this.resetLoginForm(elements));
         elements.cancelEmail.addEventListener("click", () => this.resetLoginForm(elements));
@@ -211,13 +205,11 @@ class Login {
     }
 
     toggleLoginCards(cardType) {
-        const loginCard = document.querySelector(".login-card");
         const loginCardMojang = document.querySelector(".login-card-mojang");
         const a2fCard = document.querySelector('.a2f-card');
         const emailVerifyCard = document.querySelector('.email-verify-card');
 
-        loginCard.style.display = cardType === "default" ? "block" : "none";
-        loginCardMojang.style.display = cardType === "mojang" ? "block" : "none";
+        loginCardMojang.style.display = cardType === "default" ? "block" : "none";
         a2fCard.style.display = cardType === "a2f"? "block" : "none";
         emailVerifyCard.style.display = cardType === "email"? "block" : "none";
     }
