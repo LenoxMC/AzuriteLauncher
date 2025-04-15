@@ -1,4 +1,5 @@
 import { database, changePanel, addAccount, accountSelect, t } from '../utils.js';
+import { initOthers } from '../utils/sharedFunctions.js';
 const { AZauth } = require('minecraft-java-core-azbetter');
 const { ipcRenderer, shell } = require('electron');
 const pkg = require('../package.json');
@@ -49,68 +50,7 @@ class Login {
     }
 
     async initOthers() {
-        const uuid = (await this.database.get('1234', 'accounts-selected')).value;
-        const account = (await this.database.get(uuid.selected, 'accounts')).value;
-
-        this.updateRole(account);
-        this.updateMoney(account);
-        this.updateWhitelist(account);
-        this.updateBackground(account);
-    }
-
-    updateRole(account) {
-        if (this.config.role && account.user_info.role) {
-            const blockRole = document.createElement("div");
-            blockRole.innerHTML = `<div>${t('grade')}: ${account.user_info.role.name}</div>`;
-            document.querySelector('.player-role').appendChild(blockRole);
-        } else {
-            document.querySelector(".player-role").style.display = "none";
-        }
-    }
-
-    updateMoney(account) {
-        if (this.config.money) {
-            const blockMonnaie = document.createElement("div");
-            blockMonnaie.innerHTML = `<div>${account.user_info.monnaie} pts</div>`;
-            document.querySelector('.player-monnaie').appendChild(blockMonnaie);
-        } else {
-            document.querySelector(".player-monnaie").style.display = "none";
-        }
-    }
-
-    updateWhitelist(account) {
-        const playBtn = document.querySelector(".play-btn");
-        if (this.config.whitelist_activate && 
-            (!this.config.whitelist.includes(account.name) &&
-             !this.config.whitelist_roles.includes(account.user_info.role.name))) {
-            playBtn.style.backgroundColor = "#696969";
-            playBtn.style.pointerEvents = "none";
-            playBtn.style.boxShadow = "none";
-            playBtn.textContent = t('unavailable');
-        } else {
-            playBtn.style.backgroundColor = "#00bd7a";
-            playBtn.style.pointerEvents = "auto";
-            playBtn.style.boxShadow = "2px 2px 5px rgba(0, 0, 0, 0.3)";
-            playBtn.textContent = t('play');
-        }
-    }
-
-    updateBackground(account) {
-        if (this.config.role_data) {
-            for (const roleKey in this.config.role_data) {
-                if (this.config.role_data.hasOwnProperty(roleKey)) {
-                    const role = this.config.role_data[roleKey];
-                    if (account.user_info.role.name === role.name) {
-                        const backgroundUrl = role.background;
-                        const urlPattern = /^(https?:\/\/)/;
-                        document.body.style.background = urlPattern.test(backgroundUrl) 
-                            ? `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${backgroundUrl}) black no-repeat center center scroll`
-                            : `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../src/assets/images/background/light.jpg") black no-repeat center center scroll`;
-                        break;
-                    }
-                }
-            }
-        }
+        await initOthers(this.database, this.config);
     }
 
     getOnline() {
@@ -276,6 +216,7 @@ class Login {
             const account = this.createAccountObject(account_connect);
             await this.saveAccount(account);
             this.resetLoginForm(elements);
+            this.initOthers();
             elements.loginBtn.style.display = "block";
             elements.infoLogin.innerHTML = "&nbsp;";
         } catch (err) {

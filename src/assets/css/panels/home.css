@@ -284,11 +284,38 @@ body {
     border-radius: 15px;
     transition: all 0.3s ease;
     border: 2px solid var(--glass-border);
+    position: relative; /* Required for tooltip positioning */
 }
 
 .player-head:hover {
     transform: scale(1.05);
     border-color: var(--primary-color);
+}
+
+.player-tooltip {
+    position: absolute;
+    top: 50%;
+    left: calc(100% + 10px); /* Position the tooltip to the left of the profile picture */
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: var(--text-color);
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
+    display: none; /* Initially hidden */
+    z-index: 10;
+}
+
+.player-head:hover .player-tooltip {
+    display: block; /* Show the tooltip on hover */
+}
+
+.player-tooltip .player-role,
+.player-tooltip .player-monnaie {
+    font-size: 12px;
+    margin: 5px 0;
+    text-align: left;
 }
 
 .player-details {
@@ -390,12 +417,13 @@ body {
     color: var(--text-color);
     font-size: 24px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease, transform 0.3s ease; /* Add transform transition */
 }
 
 .settings-btn:hover {
     background: rgba(255, 255, 255, 0.1);
     border-color: var(--primary-color);
+    transform: scale(1.1); /* Slightly enlarge the button on hover */
 }
 
 /* Alert Banner Styles */
