@@ -46,8 +46,8 @@ class Login {
         const account = (await this.database.get(uuid.selected, 'accounts')).value;
 
         document.querySelector('.player-skin-title').innerHTML = `${t('skin_of')} ${account.name}`;
-        document.querySelector('.skin-renderer-settings').src = `${websiteUrl}skin3d/3d-api/skin-api/${account.name}`;
-    }
+        document.querySelector('.skin-renderer-settings').src = `${websiteUrl}skin3d/3d-api/skin-api/${account.name}/300/400`;  
+      }
 
     async initOthers() {
         await initOthers(this.database, this.config);

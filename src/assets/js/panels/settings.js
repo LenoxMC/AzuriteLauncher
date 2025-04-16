@@ -392,7 +392,7 @@ class Settings {
 
         const skin = document.querySelector('.skin-renderer-settings');
         const cacheBuster = new Date().getTime();
-        const url = `${azauth}skin3d/3d-api/skin-api/${account.name}`;
+        const url = `${azauth}skin3d/3d-api/skin-api/${account.name}/300/400`;
         skin.src = url;
     }
 

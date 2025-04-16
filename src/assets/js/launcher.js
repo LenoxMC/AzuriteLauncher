@@ -188,7 +188,7 @@ class Launcher {
         const account = (await this.database.get(uuid.selected, 'accounts')).value;
 
         document.querySelector('.player-skin-title').innerHTML = `Skin de ${account.name}`;
-        document.querySelector('.skin-renderer-settings').src = `${azauth}skin3d/3d-api/skin-api/${account.name}`;
+        document.querySelector('.skin-renderer-settings').src = `${azauth}skin3d/3d-api/skin-api/${account.name}/300/400`;
     }
 
     async initOthers() {

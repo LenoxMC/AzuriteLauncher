@@ -67,6 +67,7 @@ export function updateWhitelist(account, config) {
 
 export function updateBackground(account, config) {
     document.body.style.background = `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../src/assets/images/background/light.jpg") black no-repeat center center scroll`;
+    document.body.style.backgroundSize = 'cover';
 
     if (config.role_data) {
         for (const roleKey in config.role_data) {
@@ -77,7 +78,8 @@ export function updateBackground(account, config) {
                     const urlPattern = /^(https?:\/\/)/;
                     document.body.style.background = urlPattern.test(backgroundUrl) 
                         ? `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${backgroundUrl}) black no-repeat center center scroll`
-                        : `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../src/assets/images/background/light.jpg") black no-repeat center center scroll`;
+                        : `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../src/assets/images/background/light.jpg") black no-repeat center center scroll `;
+                    document.body.style.backgroundSize = 'cover';
                     break;
                 }
             }

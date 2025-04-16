@@ -18,11 +18,13 @@ body {
     background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
     color: var(--text-color);
     min-height: 100vh;
+    
 }
 
 .home-content {
     display: flex;
     min-height: 100vh;
+    background-size: cover;
 }
 
 /* Sidebar Styles */
@@ -59,9 +61,9 @@ body {
 
 /* Play Button Styles */
 .play-btn {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
+    width: 120px;
+    height: 50px;
+    border-radius: 10px;
     background: var(--primary-color);
     border: none;
     color: #121212;
@@ -71,6 +73,13 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.play-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 189, 122, 0.4);
 }
 
 .play-btn.disabled {
@@ -79,20 +88,21 @@ body {
     box-shadow: none;
 }
 
-.play-btn.disabled .play-icon {
-    opacity: 0.5;
+.play-btn.disabled:hover {
+    transform: none;
 }
 
 .play-icon {
-    font-size: 24px;
+    font-size: 20px;
     transition: transform 0.3s ease;
+    margin-right: 8px;
 }
 
 /* Server Status */
 .server-status {
     position: fixed;
-    top: 45px;
-    right: 20px;
+    right: 75px;
+    top: 75%;
     background: var(--glass-bg);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -102,6 +112,7 @@ body {
     display: flex;
     align-items: center;
     gap: 15px;
+    z-index: 1000;
 }
 
 .status-indicator {
@@ -156,7 +167,6 @@ body {
     height: calc(100vh - 160px);
     display: flex;
     flex-direction: column;
-    margin-top: -40px;
 }
 
 .news-list {
@@ -205,7 +215,7 @@ body {
 .video-section {
     position: fixed;
     right: 20px;
-    bottom: 140px;
+    top: 80px;
     width: 300px;
     background: var(--glass-bg);
     backdrop-filter: blur(10px);
@@ -429,16 +439,16 @@ body {
 /* Alert Banner Styles */
 .advert-banner {
     position: fixed;
-    bottom: 20px;
+    top: 20px;
     left: calc(var(--sidebar-width) + 20px);
-    right: 20px;
+    right: 40px;
     background: rgba(87, 0, 0, 0.8);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 0, 0, 0.2);
     border-radius: 10px;
     padding: 10px 20px;
-    z-index: 1000;
+    z-index: 2000;
     max-width: calc(100% - var(--sidebar-width) - 40px);
     overflow: hidden;
 }
@@ -450,42 +460,15 @@ body {
 }
 
 .play-element {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
-}
-
-.admin-btn {
-    position: absolute;
-    top: 10px;
-    right: 100px;
-    text-align: center;
-    height: 50px;
-    border: none;
-    border-radius: 15px;
-    transition: all 0.5s cubic-bezier(1, 0.46, 0, 1.29);
-}
-
-/* Hover styles for .admin-btn */
-.admin-btn:hover {
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-@media (min-width: 768px) {
-    .admin-btn {
-        right: 100px;
-    }
-}
-
-@media (max-width: 767px) {
-    .admin-btn {
-        position: static;
-        width: 160px;
-        margin: 15px auto;
-        border-radius: 20px;
-    }
+    z-index: 1000;
 }
 
 .icon-settings:before {
@@ -527,6 +510,12 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    text-align: center;
 }
 
 .text-download,
