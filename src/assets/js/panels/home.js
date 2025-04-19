@@ -339,12 +339,12 @@ class Home {
             playBtn.style.backgroundColor = "#696969";
             playBtn.style.pointerEvents = "none";
             playBtn.style.boxShadow = "none";
-            playBtn.textContent = t('unavailable');
+            playBtn.innerHTML = `<span>${t('unavailable')}</span>`;
         } else {
             playBtn.style.backgroundColor = "#00bd7a";
             playBtn.style.pointerEvents = "auto";
-            playBtn.style.boxShadow = "2px 2px 5px rgba(0, 0, 0, 0.3)";
-            playBtn.textContent = t('play');
+            playBtn.style.boxShadow = "0 0 5px #00bd7a";
+            playBtn.innerHTML = `<i class="play-icon">▶</i><span>${t('play')}</span>`;
         }
     }
 }

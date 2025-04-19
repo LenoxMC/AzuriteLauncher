@@ -61,25 +61,29 @@ body {
 
 /* Play Button Styles */
 .play-btn {
-    width: 120px;
+    width: 200px;
     height: 50px;
     border-radius: 10px;
-    background: var(--primary-color);
+    background: #00bd7a;
     border: none;
-    color: #121212;
+    color: #ffffff;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 189, 122, 0.3);
+    box-shadow: 0 0 5px #00bd7a;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 18px;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
 }
 
 .play-btn:hover {
+    background: #009c65;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 189, 122, 0.4);
+    box-shadow: 0 0 15px #00bd7a;
 }
 
 .play-btn.disabled {
@@ -94,15 +98,19 @@ body {
 
 .play-icon {
     font-size: 20px;
-    transition: transform 0.3s ease;
     margin-right: 8px;
+    transition: transform 0.3s ease;
+}
+
+.play-btn:hover .play-icon {
+    transform: scale(1.1);
 }
 
 /* Server Status */
 .server-status {
     position: fixed;
-    right: 75px;
-    top: 75%;
+    right: 20px;
+    width: 300px;
     background: var(--glass-bg);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -113,6 +121,7 @@ body {
     align-items: center;
     gap: 15px;
     z-index: 1000;
+    top: calc(90vh - 100px);
 }
 
 .status-indicator {
@@ -133,10 +142,12 @@ body {
 }
 
 .players-count {
+    position: absolute;
     display: flex;
     align-items: center;
     gap: 8px;
     font-size: 16px;
+    right: 20px;
 }
 
 /* Main Content */
@@ -152,7 +163,7 @@ body {
     grid-template-columns: 1fr;
     gap: 20px;
     padding: 20px;
-    margin-top: 80px;
+    margin-top: 100px;
 }
 
 /* News Section */
@@ -164,7 +175,7 @@ body {
     border-radius: 15px;
     padding: 30px;
     margin-right: 320px;
-    height: calc(100vh - 160px);
+    height: calc(90vh - 140px);
     display: flex;
     flex-direction: column;
 }
@@ -215,8 +226,9 @@ body {
 .video-section {
     position: fixed;
     right: 20px;
-    top: 80px;
+    top: 100px;
     width: 300px;
+    height: calc(90vh - 260px);
     background: var(--glass-bg);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -242,15 +254,6 @@ body {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 10px;
     width: 90%;
-}
-
-/* Responsive Design */
-@media (max-width: 1200px) {
-    .news-section {
-        margin-right: 0;
-        height: auto;
-        max-height: calc(100vh - 200px);
-    }
 }
 
 @media (max-width: 768px) {
@@ -396,16 +399,55 @@ body {
 
 /* Video Section Styles */
 .ytb {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
+    position: relative;
+    width: 100%;
+    margin-top: 10px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    box-shadow: var(--glass-shadow);
+    transition: all 0.3s ease;
+    opacity: 0.8;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.ytb:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(31, 38, 135, 0.45);
+}
+
+.video {
+    position: relative;
+    padding: 20px;
+    background: transparent;
+    font-family: Poppins;
+    font-size: 13px !important;
+    color: var(--text-color);
+    text-decoration: none;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    display: flex;
+    gap: 5%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
     overflow: hidden;
 }
 
 .youtube-thumbnail {
     position: relative;
     width: 100%;
-    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    padding-top: 56.25%;
     overflow: hidden;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+    max-height: 300px;
 }
 
 .thumbnail-img {
@@ -415,6 +457,97 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 10px;
+}
+
+.youtube-thumbnail iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 10px;
+    max-height: 300px;
+}
+
+.ytb-play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 24px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.ytb-play-btn:hover {
+    background: rgba(0, 0, 0, 0.6);
+    transform: translate(-50%, -50%) scale(1.1);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.video iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.ytb-btn {
+    width: 180px;
+    border-radius: 8px;
+    padding: 10px 15px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    font: normal normal bold 14px/20px Poppins;
+    color: var(--text-color);
+    box-shadow: var(--glass-shadow);
+    cursor: pointer;
+    text-align: center;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.ytb-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.45);
+}
+
+.ytb-btn::before {
+    content: "▶";
+    font-size: 16px;
+}
+
+.video-credits {
+    text-align: center;
+    font: normal normal bold 30px/40px Poppins;
+    font-size: 17px;
+    color: var(--text-color);
+    margin: 1rem 0;
 }
 
 /* Button Styles */
@@ -439,9 +572,9 @@ body {
 /* Alert Banner Styles */
 .advert-banner {
     position: fixed;
-    top: 20px;
-    left: calc(var(--sidebar-width) + 20px);
-    right: 40px;
+    top: 25px;
+    left: calc(var(--sidebar-width) + 40px);
+    right: 20px;
     background: rgba(87, 0, 0, 0.8);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -783,80 +916,12 @@ body::-webkit-scrollbar {
     opacity: 1;
 }
 
-.video {
-    position: relative;
-    padding: 10px;
-    background-color: #1f1f1f;
-    font-family: Poppins;
-    font-size: 13px !important;
-    color: #E1E1E1;
-    text-decoration: none;
-    border-radius: 0px 0px 10px 10px;
-    transition: color .2s;
-    display: flex;
-    gap: 5%;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.ytb-play-btn {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.6);
-    border: none;
-    color: white;
-    font-size: 30px;
-    padding: 20px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.ytb-btn {
-    width: 200px;
-    border-radius: 10px;
-    padding: px;
-    background: #3436a3;
-    font: normal normal bold 15px/20px Poppins;
-    color: #ffffff;
-    box-shadow: 0 0 5px #3436a3;
-    cursor: pointer;
-    text-align: center;
-    margin-top: 0.5rem;
-}
-
-.ytb-btn:hover {
-    background: #1f2081;
-}
-
-.ytb-play-btn:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-}
-
-.video iframe {
-    width: 95%;
-    height: 240px;
-    border: none;
-}
-
 .credits-container {
     display: flex;
     flex-direction: row; 
     align-items: center; 
     justify-content: center; 
     gap: 0px;
-}
-
-.video-credits {
-    text-align: center;
-    font: normal normal bold 30px/40px Poppins;
-    font-size: 17px;
-    color: #d6d4d4;
 }
 
 .advert-banner .scrolling-text {
