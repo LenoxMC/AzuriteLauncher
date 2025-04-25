@@ -9,8 +9,15 @@ import { config, t } from './utils.js';
 
 let dev = process.env.NODE_ENV === 'dev';
 
-
+/**
+ * Classe gérant l'écran de démarrage du launcher
+ * @class Splash
+ */
 class Splash {
+    /**
+     * Crée une nouvelle instance de Splash
+     * @constructor
+     */
     constructor() {
         this.splash = document.querySelector(".splash");
         this.splashMessage = document.querySelector(".splash-message");
@@ -19,6 +26,13 @@ class Splash {
         this.progress = document.querySelector("progress");
         document.addEventListener('DOMContentLoaded', () => this.startAnimation());
     }
+
+    /**
+     * Démarre l'animation de l'écran de démarrage
+     * @async
+     * @method startAnimation
+     * @returns {Promise<void>}
+     */
     async startAnimation() {
         config.GetConfig().then(res => {
             let splashes = [
@@ -46,6 +60,12 @@ class Splash {
         this.maintenanceCheck();
     }
 
+    /**
+     * Vérifie si le launcher est en maintenance
+     * @async
+     * @method maintenanceCheck
+     * @returns {Promise<void>}
+     */
     async maintenanceCheck() {
         if (dev) return this.startLauncher();
         config.GetConfig().then(res => {
@@ -57,6 +77,11 @@ class Splash {
         })
     }
 
+    /**
+     * Vérifie les mises à jour disponibles
+     * @method checkUpdate
+     * @returns {void}
+     */
     async checkUpdate() {
         this.setStatus(`Recherche de mise à jour...`);
         ipcRenderer.send('update-app');
@@ -76,13 +101,23 @@ class Splash {
         })
     }
 
-
+    /**
+     * Démarre le launcher principal
+     * @method startLauncher
+     * @returns {void}
+     */
     startLauncher() {
         this.setStatus(`Démarrage du launcher`);
         ipcRenderer.send('main-window-open');
         ipcRenderer.send('update-window-close');
     }
 
+    /**
+     * Arrête le launcher avec un message
+     * @method shutdown
+     * @param {string} text - Le message d'arrêt à afficher
+     * @returns {void}
+     */
     shutdown(text) {
         this.setStatus(`${text}<br>Arrêt dans 5s`);
         let i = 4;
@@ -92,20 +127,44 @@ class Splash {
         }, 1000);
     }
 
+    /**
+     * Met à jour le message de statut
+     * @method setStatus
+     * @param {string} text - Le texte à afficher
+     * @returns {void}
+     */
     setStatus(text) {
         this.message.innerHTML = text;
     }
 
+    /**
+     * Affiche ou masque la barre de progression
+     * @method toggleProgress
+     * @returns {void}
+     */
     toggleProgress() {
         if (this.progress.classList.toggle("show")) this.setProgress(0, 1);
     }
 
+    /**
+     * Met à jour la barre de progression
+     * @method setProgress
+     * @param {number} value - La valeur actuelle
+     * @param {number} max - La valeur maximale
+     * @returns {void}
+     */
     setProgress(value, max) {
         this.progress.value = value;
         this.progress.max = max;
     }
 }
 
+/**
+ * Fonction utilitaire pour créer un délai
+ * @function sleep
+ * @param {number} ms - Le nombre de millisecondes à attendre
+ * @returns {Promise<void>}
+ */
 function sleep(ms) {
     return new Promise(r => setTimeout(r, ms));
 }

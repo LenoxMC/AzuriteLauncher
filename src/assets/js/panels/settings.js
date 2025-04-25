@@ -16,9 +16,21 @@ const pkg = require('../package.json');
 const { ipcRenderer, shell } = require('electron');
 const settings_url = pkg.user ? `${pkg.settings}/${pkg.user}` : pkg.settings;
 
+/**
+ * Classe gérant le panneau des paramètres du launcher
+ * @class Settings
+ */
 class Settings {
+    /** @type {string} L'identifiant du panneau */
     static id = "settings";
 
+    /**
+     * Initialise le panneau des paramètres
+     * @async
+     * @method init
+     * @param {Object} config - La configuration du launcher
+     * @returns {Promise<void>}
+     */
     async init(config) {
         this.config = config;
         this.database = await new database().init();
@@ -31,12 +43,17 @@ class Settings {
         this.initOptionalMods();
         this.headplayer();
 
-
         document.getElementById('uploadSkinButton').addEventListener('click', async () => {
             await this.selectFile();
         });
     }
 
+    /**
+     * Rafraîchit les données du panneau
+     * @async
+     * @method refreshData
+     * @returns {Promise<void>}
+     */
     async refreshData() {
         document.querySelector('.player-role').innerHTML = '';
         document.querySelector('.player-monnaie').innerHTML = '';
@@ -45,25 +62,12 @@ class Settings {
         await this.updateAccountImage();
     }
 
-    async headplayer() {
-        const uuid = (await this.database.get('1234', 'accounts-selected')).value;
-        const account = (await this.database.get(uuid.selected, 'accounts')).value;
-        const pseudo = account.name;
-        const azauth = this.getAzAuthUrl();
-        const timestamp = new Date().getTime();
-        const skin_url = `${azauth}api/skin-api/avatars/face/${pseudo}/?t=${timestamp}`;
-        const playerHead = document.querySelector(".player-head");
-        playerHead.style.backgroundImage = `url(${skin_url})`;
-
-        let tooltip = playerHead.querySelector('.player-tooltip');
-        if (!tooltip) {
-            tooltip = document.createElement('div');
-            tooltip.classList.add('player-tooltip');
-            playerHead.appendChild(tooltip);
-        }
-        tooltip.innerHTML = '';
-    }
-
+    /**
+     * Met à jour l'image du compte sélectionné
+     * @async
+     * @method updateAccountImage
+     * @returns {Promise<void>}
+     */
     async updateAccountImage() {
         const uuid = (await this.database.get('1234', 'accounts-selected')).value;
         const account = (await this.database.get(uuid.selected, 'accounts')).value;
@@ -83,10 +87,21 @@ class Settings {
         }
     }
 
+    /**
+     * Initialise les fonctionnalités supplémentaires
+     * @async
+     * @method initOthers
+     * @returns {Promise<void>}
+     */
     async initOthers() {
         await initOthers(this.database, this.config);
     }
 
+    /**
+     * Initialise la gestion des comptes
+     * @method initAccount
+     * @returns {void}
+     */
     initAccount() {
         document.querySelector('.accounts').addEventListener('click', async (e) => {
             const uuid = e.target.id;
@@ -122,6 +137,12 @@ class Settings {
         });
     }
 
+    /**
+     * Initialise la gestion de la RAM
+     * @async
+     * @method initRam
+     * @returns {Promise<void>}
+     */
     async initRam() {
         const ramDatabase = (await this.database.get('1234', 'ram'))?.value;
         const totalMem = Math.trunc(os.totalmem() / 1073741824 * 10) / 10;
@@ -149,6 +170,12 @@ class Settings {
         });
     }
 
+    /**
+     * Met à jour la configuration des mods
+     * @async
+     * @method updateModsConfig
+     * @returns {Promise<void>}
+     */
     async updateModsConfig() {
         const modsDir = path.join(`${dataDirectory}/${process.platform == 'darwin' ? this.config.dataDirectory : `.${this.config.dataDirectory}`}`, 'mods');
         const launcherConfigDir = path.join(`${dataDirectory}/${process.platform == 'darwin' ? this.config.dataDirectory : `.${this.config.dataDirectory}`}`, 'launcher_config');
@@ -191,6 +218,12 @@ class Settings {
         fs.writeFileSync(modsConfigFile, JSON.stringify(localModsConfig, null, 2));
     }
 
+    /**
+     * Initialise les mods optionnels
+     * @async
+     * @method initOptionalMods
+     * @returns {Promise<void>}
+     */
     async initOptionalMods() {
         const modsDir = path.join(`${dataDirectory}/${process.platform == 'darwin' ? this.config.dataDirectory : `.${this.config.dataDirectory}`}`, 'mods');
         const launcherConfigDir = path.join(`${dataDirectory}/${process.platform == 'darwin' ? this.config.dataDirectory : `.${this.config.dataDirectory}`}`, 'launcher_config');
@@ -211,6 +244,12 @@ class Settings {
         }
     }
 
+    /**
+     * Affiche un message lorsque aucun mod n'est trouvé
+     * @method displayEmptyModsMessage
+     * @param {HTMLElement} modsListElement - L'élément de liste des mods
+     * @returns {void}
+     */
     displayEmptyModsMessage(modsListElement) {
         const modElement = document.createElement('div');
         modElement.innerHTML = `
@@ -220,6 +259,13 @@ class Settings {
         modsListElement.appendChild(modElement);
     }
 
+    /**
+     * Crée la configuration des mods
+     * @async
+     * @method createModsConfig
+     * @param {string} modsConfigFile - Le chemin du fichier de configuration
+     * @returns {Promise<void>}
+     */
     async createModsConfig(modsConfigFile) {
         const baseUrl = settings_url.endsWith('/') ? settings_url : `${settings_url}/`;
         const response = await fetch(pkg.env === 'azuriom' ? `${baseUrl}api/centralcorp/mods` : `${baseUrl}utils/mods`);
@@ -233,6 +279,15 @@ class Settings {
         fs.writeFileSync(modsConfigFile, JSON.stringify(modsConfig, null, 2));
     }
 
+    /**
+     * Affiche la liste des mods
+     * @async
+     * @method displayMods
+     * @param {string} modsConfigFile - Le chemin du fichier de configuration
+     * @param {string} modsDir - Le répertoire des mods
+     * @param {HTMLElement} modsListElement - L'élément de liste des mods
+     * @returns {Promise<void>}
+     */
     async displayMods(modsConfigFile, modsDir, modsListElement) {
         let modsConfig;
 
@@ -308,6 +363,17 @@ class Settings {
         });
     }
 
+    /**
+     * Active ou désactive un mod
+     * @async
+     * @method toggleMod
+     * @param {string} mod - Le nom du mod
+     * @param {boolean} enabled - Si le mod doit être activé
+     * @param {Object} modsConfig - La configuration des mods
+     * @param {string} modsDir - Le répertoire des mods
+     * @param {string} modsConfigFile - Le chemin du fichier de configuration
+     * @returns {Promise<void>}
+     */
     async toggleMod(mod, enabled, modsConfig, modsDir, modsConfigFile) {
         const modFiles = fs.readdirSync(modsDir).filter(file => file.startsWith(mod) && (file.endsWith('.jar') || file.endsWith('.jar-disable')));
 
@@ -323,6 +389,12 @@ class Settings {
         }
     }
 
+    /**
+     * Sélectionne un fichier pour le skin
+     * @async
+     * @method selectFile
+     * @returns {Promise<void>}
+     */
     async selectFile() {
         const input = document.getElementById('fileInput');
         input.click();
@@ -347,6 +419,13 @@ class Settings {
         };
     }
 
+    /**
+     * Traite le changement de skin
+     * @async
+     * @method processSkinChange
+     * @param {File} file - Le fichier du skin
+     * @returns {Promise<void>}
+     */
     async processSkinChange(file) {
         if (!file) {
             console.error('No file provided');
@@ -381,6 +460,12 @@ class Settings {
         xhr.send(formData);
     }
 
+    /**
+     * Initialise l'aperçu du skin
+     * @async
+     * @method initPreviewSkin
+     * @returns {Promise<void>}
+     */
     async initPreviewSkin() {
         console.log('initPreviewSkin called');
         const azauth = this.getAzAuthUrl();
@@ -396,6 +481,12 @@ class Settings {
         skin.src = url;
     }
 
+    /**
+     * Initialise la résolution
+     * @async
+     * @method initResolution
+     * @returns {Promise<void>}
+     */
     async initResolution() {
         let resolutionDatabase = (await this.database.get('1234', 'screen'))?.value?.screen;
         let resolution = resolutionDatabase ? resolutionDatabase : { width: "1280", height: "720" };
@@ -417,6 +508,12 @@ class Settings {
         });
     }
 
+    /**
+     * Initialise les paramètres du launcher
+     * @async
+     * @method initLauncherSettings
+     * @returns {Promise<void>}
+     */
     async initLauncherSettings() {
         let launcherDatabase = (await this.database.get('1234', 'launcher'))?.value;
         let settingsLauncher = {
@@ -469,6 +566,11 @@ class Settings {
         })
     }
 
+    /**
+     * Initialise les onglets
+     * @method initTab
+     * @returns {void}
+     */
     initTab() {
         let TabBtn = document.querySelectorAll('.tab-btn');
         let TabContent = document.querySelectorAll('.tabs-settings-content');
@@ -513,6 +615,12 @@ class Settings {
         document.getElementById('uploadSkinButton').textContent = t('change_skin');
     }
 
+    /**
+     * Initialise les paramètres par défaut
+     * @async
+     * @method initSettingsDefault
+     * @returns {Promise<void>}
+     */
     async initSettingsDefault() {
         if (!(await this.database.getAll('accounts-selected')).length) {
             this.database.add({ uuid: "1234" }, 'accounts-selected')
@@ -544,7 +652,12 @@ class Settings {
         }
     }
 
-   getAzAuthUrl() {
+    /**
+     * Récupère l'URL de base pour AzAuth
+     * @method getAzAuthUrl
+     * @returns {string} L'URL de base
+     */
+    getAzAuthUrl() {
         const baseUrl = settings_url.endsWith('/') ? settings_url : `${settings_url}/`;
         return pkg.env === 'azuriom' 
             ? baseUrl 
@@ -553,4 +666,5 @@ class Settings {
             : `${this.config.azauth}/`;
     }
 }
+
 export default Settings;

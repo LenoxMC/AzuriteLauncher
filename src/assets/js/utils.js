@@ -13,6 +13,11 @@ const path = require('path');
 let translations = {};
 const systemLanguage = navigator.language.split('-')[0] || 'en';
 
+/**
+ * Charge les traductions depuis le fichier de langue approprié
+ * @function loadTranslations
+ * @returns {void}
+ */
 function loadTranslations() {
     const translationPath = path.join(__dirname, `./assets/translations/${systemLanguage}.json`);
     if (fs.existsSync(translationPath)) {
@@ -26,6 +31,12 @@ function loadTranslations() {
     }
 }
 
+/**
+ * Récupère la traduction pour une clé donnée
+ * @function t
+ * @param {string} key - La clé de traduction
+ * @returns {string} La traduction ou la clé si aucune traduction n'est trouvée
+ */
 function t(key) {
     return translations[key] || key;
 }
@@ -45,6 +56,12 @@ export {
     t
 };
 
+/**
+ * Change le panneau actif dans l'interface
+ * @function changePanel
+ * @param {string} id - L'identifiant du panneau à activer
+ * @returns {void}
+ */
 function changePanel(id) {
     const panel = document.querySelector(`.${id}`);
     const active = document.querySelector(`.active`);
@@ -52,6 +69,14 @@ function changePanel(id) {
     panel.classList.add("active");
 }
 
+/**
+ * Ajoute un nouveau compte à l'interface
+ * @function addAccount
+ * @param {Object} data - Les données du compte
+ * @param {string} data.uuid - L'UUID du compte
+ * @param {string} data.name - Le nom du compte
+ * @returns {void}
+ */
 function addAccount(data) {
     const azauth = getAzAuthUrl();
     const timestamp = new Date().getTime();
@@ -67,6 +92,12 @@ function addAccount(data) {
     document.querySelector('.accounts').appendChild(div);
 }
 
+/**
+ * Sélectionne un compte et met à jour l'interface
+ * @function accountSelect
+ * @param {string} uuid - L'UUID du compte à sélectionner
+ * @returns {void}
+ */
 function accountSelect(uuid) {
     const account = document.getElementById(uuid);
     const pseudo = account.querySelector('.account-name').innerText;
@@ -77,6 +108,12 @@ function accountSelect(uuid) {
     headplayer(pseudo);
 }
 
+/**
+ * Met à jour l'image de la tête du joueur
+ * @function headplayer
+ * @param {string} pseudo - Le pseudo du joueur
+ * @returns {void}
+ */
 function headplayer(pseudo) {
     const azauth = getAzAuthUrl();
     const timestamp = new Date().getTime();
@@ -84,6 +121,11 @@ function headplayer(pseudo) {
     document.querySelector(".player-head").style.backgroundImage = `url(${skin_url})`;
 }
 
+/**
+ * Récupère l'URL de base pour AzAuth
+ * @function getAzAuthUrl
+ * @returns {string} L'URL de base pour AzAuth
+ */
 function getAzAuthUrl() {
     const baseUrl = settings_url.endsWith('/') ? settings_url : `${settings_url}/`;
     return pkg.env === 'azuriom' 

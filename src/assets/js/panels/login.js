@@ -1,3 +1,9 @@
+/**
+ * @license CC-BY-NC 4.0 - https://creativecommons.org/licenses/by-nc/4.0/
+ */
+
+'use strict';
+
 import { database, changePanel, addAccount, accountSelect, t } from '../utils.js';
 import { initOthers } from '../utils/sharedFunctions.js';
 const { AZauth } = require('minecraft-java-core-azbetter');
@@ -5,11 +11,21 @@ const { ipcRenderer, shell } = require('electron');
 const pkg = require('../package.json');
 const settings_url = pkg.user ? `${pkg.settings}/${pkg.user}` : pkg.settings;
 
-'use strict';
-
+/**
+ * Classe gérant le panneau de connexion du launcher
+ * @class Login
+ */
 class Login {
+    /** @type {string} L'identifiant du panneau */
     static id = "login";
 
+    /**
+     * Initialise le panneau de connexion
+     * @async
+     * @method init
+     * @param {Object} config - La configuration du launcher
+     * @returns {Promise<void>}
+     */
     async init(config) {
         this.config = config;
         this.database = await new database().init();
@@ -17,6 +33,11 @@ class Login {
         this.config.online ? this.getOnline() : this.getOffline();
     }
 
+    /**
+     * Définit les textes statiques du panneau
+     * @method setStaticTexts
+     * @returns {void}
+     */
     setStaticTexts() {
         document.getElementById('a2f-label').textContent = t('2fa_enabled');
         document.getElementById('a2f-login-btn').textContent = t('play');
@@ -31,6 +52,12 @@ class Login {
         document.getElementById('new-user-link').textContent = t('no_account');
     }
 
+    /**
+     * Rafraîchit les données du panneau
+     * @async
+     * @method refreshData
+     * @returns {Promise<void>}
+     */
     async refreshData() {
         document.querySelector('.player-role').innerHTML = '';
         document.querySelector('.player-monnaie').innerHTML = '';
@@ -38,6 +65,12 @@ class Login {
         await this.initPreviewSkin();
     }
 
+    /**
+     * Initialise l'aperçu du skin du joueur
+     * @async
+     * @method initPreviewSkin
+     * @returns {Promise<void>}
+     */
     async initPreviewSkin() {
         console.log('initPreviewSkin called');
         const baseUrl = settings_url.endsWith('/') ? settings_url : `${settings_url}/`;
@@ -47,12 +80,23 @@ class Login {
 
         document.querySelector('.player-skin-title').innerHTML = `${t('skin_of')} ${account.name}`;
         document.querySelector('.skin-renderer-settings').src = `${websiteUrl}skin3d/3d-api/skin-api/${account.name}/300/400`;  
-      }
+    }
 
+    /**
+     * Initialise les fonctionnalités supplémentaires
+     * @async
+     * @method initOthers
+     * @returns {Promise<void>}
+     */
     async initOthers() {
         await initOthers(this.database, this.config);
     }
 
+    /**
+     * Initialise le mode de connexion en ligne
+     * @method getOnline
+     * @returns {void}
+     */
     getOnline() {
         console.log(`Initializing Az Panel...`);
         this.loginAzAuth();
@@ -61,6 +105,12 @@ class Login {
         });
     }
 
+    /**
+     * Gère la connexion via AzAuth
+     * @async
+     * @method loginAzAuth
+     * @returns {Promise<void>}
+     */
     async loginAzAuth() {
         const elements = this.getElements();
         const azauth = this.getAzAuthUrl();
@@ -69,6 +119,11 @@ class Login {
         this.setupEventListeners(elements, azauth);
     }
 
+    /**
+     * Récupère les éléments du DOM nécessaires
+     * @method getElements
+     * @returns {Object} Les éléments du DOM
+     */
     getElements() {
         return {
             mailInput: document.querySelector('.Mail'),
@@ -85,6 +140,11 @@ class Login {
         };
     }
 
+    /**
+     * Récupère l'URL de base pour AzAuth
+     * @method getAzAuthUrl
+     * @returns {string} L'URL de base
+     */
     getAzAuthUrl() {
         const baseUrl = settings_url.endsWith('/') ? settings_url : `${settings_url}/`;
         return pkg.env === 'azuriom' 
@@ -94,6 +154,12 @@ class Login {
             : `${this.config.azauth}/`;
     }
 
+    /**
+     * Configure les liens externes
+     * @method setupExternalLinks
+     * @param {string} azauth - L'URL de base d'AzAuth
+     * @returns {void}
+     */
     setupExternalLinks(azauth) {
         const newuserurl = `${azauth}user/register`;
         const passwordreseturl = `${azauth}user/password/reset`;
@@ -107,6 +173,13 @@ class Login {
         this.passwordreset.addEventListener('click', () => shell.openExternal(passwordreseturl));
     }
 
+    /**
+     * Configure les écouteurs d'événements
+     * @method setupEventListeners
+     * @param {Object} elements - Les éléments du DOM
+     * @param {string} azauth - L'URL de base d'AzAuth
+     * @returns {void}
+     */
     setupEventListeners(elements, azauth) {
         elements.cancelMojangBtn.addEventListener("click", () => this.toggleLoginCards("default"));
         elements.cancel2f.addEventListener("click", () => this.resetLoginForm(elements));
@@ -144,6 +217,12 @@ class Login {
         });
     }
 
+    /**
+     * Bascule entre les différents types de cartes de connexion
+     * @method toggleLoginCards
+     * @param {string} cardType - Le type de carte à afficher
+     * @returns {void}
+     */
     toggleLoginCards(cardType) {
         const loginCardMojang = document.querySelector(".login-card-mojang");
         const a2fCard = document.querySelector('.a2f-card');
@@ -154,6 +233,12 @@ class Login {
         emailVerifyCard.style.display = cardType === "email"? "block" : "none";
     }
 
+    /**
+     * Réinitialise le formulaire de connexion
+     * @method resetLoginForm
+     * @param {Object} elements - Les éléments du DOM
+     * @returns {void}
+     */
     resetLoginForm(elements) {
         this.toggleLoginCards("default");
         elements.infoLogin.innerHTML = "";
@@ -167,14 +252,28 @@ class Login {
         elements.a2finput.value = "";
     }
 
+    /**
+     * Réactive le formulaire de connexion
+     * @method enableLoginForm
+     * @param {Object} elements - Les éléments du DOM
+     * @returns {void}
+     */
     enableLoginForm(elements) {
         elements.cancelMojangBtn.disabled = false;
         elements.loginBtn.disabled = false;
         elements.mailInput.disabled = false;
         elements.passwordInput.disabled = false;
-        
     }
 
+    /**
+     * Gère le processus de connexion
+     * @async
+     * @method handleLogin
+     * @param {Object} elements - Les éléments du DOM
+     * @param {string} azauth - L'URL de base d'AzAuth
+     * @param {string} [a2fCode] - Le code 2FA
+     * @returns {Promise<void>}
+     */
     async handleLogin(elements, azauth, a2fCode = null) {
         const azAuth = new AZauth(azauth);
         try {
@@ -226,6 +325,12 @@ class Login {
         }
     }
 
+    /**
+     * Crée un objet compte à partir des données de connexion
+     * @method createAccountObject
+     * @param {Object} account_connect - Les données de connexion
+     * @returns {Object} L'objet compte formaté
+     */
     createAccountObject(account_connect) {
         return {
             access_token: account_connect.access_token,
@@ -245,6 +350,13 @@ class Login {
         };
     }
 
+    /**
+     * Sauvegarde le compte dans la base de données
+     * @async
+     * @method saveAccount
+     * @param {Object} account - L'objet compte à sauvegarder
+     * @returns {Promise<void>}
+     */
     async saveAccount(account) {
         await this.database.add(account, 'accounts');
         await this.database.update({ uuid: "1234", selected: account.uuid }, 'accounts-selected');

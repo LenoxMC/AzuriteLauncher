@@ -8,17 +8,38 @@ const convert = require("xml-js");
 
 const settings_url = pkg.user ? `${pkg.settings}/${pkg.user}` : pkg.settings;
 
+/**
+ * Récupère l'URL de configuration
+ * @function getConfigUrl
+ * @returns {string} L'URL de configuration
+ */
 function getConfigUrl() {
     const baseUrl = settings_url.endsWith('/') ? settings_url : `${settings_url}/`;
     return pkg.env === 'azuriom' ? `${baseUrl}api/centralcorp/options` : `${baseUrl}utils/api`;
 }
 
+/**
+ * Récupère l'URL de base pour AzAuth
+ * @function getAzAuthUrl
+ * @param {Object} config - La configuration actuelle
+ * @returns {string} L'URL de base pour AzAuth
+ */
 function getAzAuthUrl(config) {
     const baseUrl = settings_url.endsWith('/') ? settings_url : `${settings_url}/`;
     return pkg.env === 'azuriom' ? baseUrl : config.azauth.endsWith('/') ? config.azauth : `${config.azauth}/`;
 }
 
+/**
+ * Classe gérant la configuration du launcher
+ * @class Config
+ */
 class Config {
+    /**
+     * Récupère la configuration du launcher
+     * @async
+     * @method GetConfig
+     * @returns {Promise<Object>} La configuration du launcher
+     */
     async GetConfig() {
         try {
             const response = await fetch(getConfigUrl());
@@ -29,6 +50,12 @@ class Config {
         }
     }
 
+    /**
+     * Récupère les actualités du serveur
+     * @async
+     * @method GetNews
+     * @returns {Promise<Array>} Les actualités formatées
+     */
     async GetNews() {
         try {
             this.config = await this.GetConfig();
@@ -43,7 +70,7 @@ class Config {
                     title: "Aucun article disponible",
                     content: "Aucun article n'a été trouvé.",
                     author: "",
-                    publish_date: "2024"
+                    publish_date: "2025"
                 }];
             }
 
@@ -54,6 +81,12 @@ class Config {
         }
     }
 
+    /**
+     * Parse un élément d'actualité RSS
+     * @method parseNewsItem
+     * @param {Object} item - L'élément RSS à parser
+     * @returns {Object} L'élément d'actualité formaté
+     */
     parseNewsItem(item) {
         return {
             title: item.title._text,

@@ -5,7 +5,18 @@
 
 'use strict';
 
+/**
+ * Classe gérant un slider à double curseur
+ * @class Slider
+ */
 class Slider {
+    /**
+     * Crée une nouvelle instance de Slider
+     * @constructor
+     * @param {string} id - L'identifiant du slider
+     * @param {number} [minValue] - La valeur minimale
+     * @param {number} [maxValue] - La valeur maximale
+     */
     constructor(id, minValue, maxValue) {
         this.startX = 0;
         this.x = 0;
@@ -39,6 +50,11 @@ class Slider {
         this.touchRight.addEventListener('touchstart', (event) => this.onStart(event, this.touchRight));
     }
 
+    /**
+     * Réinitialise le slider à sa position par défaut
+     * @method reset
+     * @returns {void}
+     */
     reset() {
         this.touchLeft.style.left = '0px';
         this.touchRight.style.left = `${this.slider.offsetWidth - this.touchLeft.offsetWidth}px`;
@@ -48,6 +64,12 @@ class Slider {
         this.x = 0;
     }
 
+    /**
+     * Définit la valeur minimale du slider
+     * @method setMinValue
+     * @param {number} minValue - La nouvelle valeur minimale
+     * @returns {void}
+     */
     setMinValue(minValue) {
         const ratio = (minValue - this.min) / (this.max - this.min);
         this.touchLeft.style.left = `${Math.ceil(ratio * (this.slider.offsetWidth - (this.touchLeft.offsetWidth + this.normalizeFact)))}px`;
@@ -55,6 +77,12 @@ class Slider {
         this.lineSpan.style.width = `${this.touchRight.offsetLeft - this.touchLeft.offsetLeft}px`;
     }
 
+    /**
+     * Définit la valeur maximale du slider
+     * @method setMaxValue
+     * @param {number} maxValue - La nouvelle valeur maximale
+     * @returns {void}
+     */
     setMaxValue(maxValue) {
         const ratio = (maxValue - this.min) / (this.max - this.min);
         this.touchRight.style.left = `${Math.ceil(ratio * (this.slider.offsetWidth - (this.touchLeft.offsetWidth + this.normalizeFact)) + this.normalizeFact)}px`;
@@ -62,6 +90,13 @@ class Slider {
         this.lineSpan.style.width = `${this.touchRight.offsetLeft - this.touchLeft.offsetLeft}px`;
     }
 
+    /**
+     * Gère le début du déplacement d'un curseur
+     * @method onStart
+     * @param {Event} event - L'événement de souris/touch
+     * @param {HTMLElement} elem - L'élément déplacé
+     * @returns {void}
+     */
     onStart(event, elem) {
         event.preventDefault();
 
@@ -75,6 +110,12 @@ class Slider {
         document.addEventListener('touchend', this.onStop);
     }
 
+    /**
+     * Gère le déplacement d'un curseur
+     * @method onMove
+     * @param {Event} event - L'événement de souris/touch
+     * @returns {void}
+     */
     onMove = (event) => {
         this.x = event.pageX - this.startX;
 
@@ -92,6 +133,11 @@ class Slider {
         this.calculateValue();
     }
 
+    /**
+     * Gère la fin du déplacement d'un curseur
+     * @method onStop
+     * @returns {void}
+     */
     onStop = () => {
         document.removeEventListener('mousemove', this.onMove);
         document.removeEventListener('mouseup', this.onStop);
@@ -102,6 +148,11 @@ class Slider {
         this.calculateValue();
     }
 
+    /**
+     * Calcule les valeurs actuelles du slider
+     * @method calculateValue
+     * @returns {void}
+     */
     calculateValue() {
         const newValue = (this.lineSpan.offsetWidth - this.normalizeFact) / this.initialValue;
         let minValue = this.lineSpan.offsetLeft / this.initialValue;
@@ -118,12 +169,31 @@ class Slider {
         this.emit('change', this.minValue, this.maxValue);
     }
 
+    /**
+     * Stockage des fonctions de callback
+     * @property func
+     * @type {Object}
+     */
     func = {};
 
+    /**
+     * Ajoute un écouteur d'événement
+     * @method on
+     * @param {string} name - Le nom de l'événement
+     * @param {Function} func - La fonction de callback
+     * @returns {void}
+     */
     on(name, func) {
         this.func[name] = func;
     }
 
+    /**
+     * Déclenche un événement
+     * @method emit
+     * @param {string} name - Le nom de l'événement
+     * @param {...any} args - Les arguments à passer au callback
+     * @returns {void}
+     */
     emit(name, ...args) {
         if (this.func[name]) this.func[name](...args);
     }

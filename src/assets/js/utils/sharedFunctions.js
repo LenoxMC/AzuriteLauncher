@@ -1,5 +1,13 @@
 import { database, changePanel, addAccount, accountSelect, t } from '../utils.js';
 
+/**
+ * Initialise les fonctionnalités supplémentaires du launcher
+ * @async
+ * @function initOthers
+ * @param {Object} database - L'instance de la base de données
+ * @param {Object} config - La configuration du launcher
+ * @returns {Promise<void>}
+ */
 export async function initOthers(database, config) {
     const uuid = (await database.get('1234', 'accounts-selected'))?.value;
     if (!uuid || !uuid.selected) {
@@ -24,6 +32,13 @@ export async function initOthers(database, config) {
     updateBackground(account, config); // Update background
 }
 
+/**
+ * Met à jour l'affichage du rôle du joueur
+ * @function updateRole
+ * @param {Object} account - Les données du compte
+ * @param {Object} config - La configuration du launcher
+ * @returns {void}
+ */
 export function updateRole(account, config) {
     if (config.role && account.user_info.role) {
         const tooltip = document.querySelector('.player-head .player-tooltip');
@@ -36,6 +51,13 @@ export function updateRole(account, config) {
     }
 }
 
+/**
+ * Met à jour l'affichage de la monnaie du joueur
+ * @function updateMoney
+ * @param {Object} account - Les données du compte
+ * @param {Object} config - La configuration du launcher
+ * @returns {void}
+ */
 export function updateMoney(account, config) {
     if (config.money) {
         const tooltip = document.querySelector('.player-head .player-tooltip');
@@ -48,6 +70,13 @@ export function updateMoney(account, config) {
     }
 }
 
+/**
+ * Met à jour l'état du bouton de jeu en fonction de la whitelist
+ * @function updateWhitelist
+ * @param {Object} account - Les données du compte
+ * @param {Object} config - La configuration du launcher
+ * @returns {void}
+ */
 export function updateWhitelist(account, config) {
     const playBtn = document.querySelector(".play-btn");
     if (config.whitelist_activate && 
@@ -65,6 +94,13 @@ export function updateWhitelist(account, config) {
     }
 }
 
+/**
+ * Met à jour l'arrière-plan en fonction du rôle du joueur
+ * @function updateBackground
+ * @param {Object} account - Les données du compte
+ * @param {Object} config - La configuration du launcher
+ * @returns {void}
+ */
 export function updateBackground(account, config) {
     document.body.style.background = `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../src/assets/images/background/light.jpg") black no-repeat center center scroll`;
     document.body.style.backgroundSize = 'cover';

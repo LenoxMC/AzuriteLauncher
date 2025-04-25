@@ -21,7 +21,17 @@ import { initOthers } from './utils/sharedFunctions.js';
 const settings_url = pkg.user ? `${pkg.settings}/${pkg.user}` : pkg.settings;
 const urlPattern = /^(https?:\/\/)/;
 
+/**
+ * Classe principale du launcher
+ * @class Launcher
+ */
 class Launcher {
+    /**
+     * Initialise le launcher
+     * @async
+     * @method init
+     * @returns {Promise<void>}
+     */
     async init() {
         this.initLog();
         console.log("Initializing Launcher...");
@@ -34,6 +44,11 @@ class Launcher {
         this.initDiscordRPC();
     }
 
+    /**
+     * Initialise le système de logs et les raccourcis clavier
+     * @method initLog
+     * @returns {void}
+     */
     initLog() {
         document.addEventListener("keydown", (e) => {
             if ((e.ctrlKey && e.shiftKey && e.keyCode === 73) || e.keyCode === 123) {
@@ -43,6 +58,11 @@ class Launcher {
         new logger('Launcher', '#7289da');
     }
 
+    /**
+     * Initialise le Rich Presence Discord
+     * @method initDiscordRPC
+     * @returns {void}
+     */
     initDiscordRPC() {
         if (this.config.rpc_activation) {
             const rpc = new DiscordRPC.Client({ transport: 'ipc' });
@@ -65,6 +85,11 @@ class Launcher {
         }
     }
 
+    /**
+     * Initialise la barre de titre de la fenêtre
+     * @method initFrame
+     * @returns {void}
+     */
     initFrame() {
         console.log("Initializing Frame...");
         document.querySelector(".frame").classList.toggle("hide");
@@ -88,6 +113,12 @@ class Launcher {
         });
     }
 
+    /**
+     * Crée les panneaux de l'interface
+     * @method createPanels
+     * @param {...Function} panels - Les classes des panneaux à créer
+     * @returns {void}
+     */
     createPanels(...panels) {
         const panelsElem = document.querySelector(".panels");
         for (const panel of panels) {
@@ -100,6 +131,12 @@ class Launcher {
         }
     }
 
+    /**
+     * Récupère et initialise les comptes
+     * @async
+     * @method getAccounts
+     * @returns {Promise<void>}
+     */
     async getAccounts() {
         const baseUrl = settings_url.endsWith('/') ? settings_url : `${settings_url}/`;
         const AZAuth = new AZauth(this.getAzAuthUrl());
@@ -173,6 +210,12 @@ class Launcher {
         document.querySelector(".preload-content").style.display = "none";
     }
 
+    /**
+     * Rafraîchit les données affichées
+     * @async
+     * @method refreshData
+     * @returns {Promise<void>}
+     */
     async refreshData() {
         document.querySelector('.player-role').innerHTML = '';
         document.querySelector('.player-monnaie').innerHTML = '';
@@ -180,6 +223,12 @@ class Launcher {
         await this.initOthers();
     }
 
+    /**
+     * Initialise l'aperçu du skin du joueur
+     * @async
+     * @method initPreviewSkin
+     * @returns {Promise<void>}
+     */
     async initPreviewSkin() {
         console.log('initPreviewSkin called');
         const baseUrl = settings_url.endsWith('/') ? settings_url : `${settings_url}/`;
@@ -191,10 +240,21 @@ class Launcher {
         document.querySelector('.skin-renderer-settings').src = `${azauth}skin3d/3d-api/skin-api/${account.name}/300/400`;
     }
 
+    /**
+     * Initialise les autres fonctionnalités
+     * @async
+     * @method initOthers
+     * @returns {Promise<void>}
+     */
     async initOthers() {
         await initOthers(this.database, this.config);
     }
 
+    /**
+     * Récupère l'URL de base pour AzAuth
+     * @method getAzAuthUrl
+     * @returns {string} L'URL de base pour AzAuth
+     */
     getAzAuthUrl() {
         const baseUrl = settings_url.endsWith('/') ? settings_url : `${settings_url}/`;
         return pkg.env === 'azuriom' 

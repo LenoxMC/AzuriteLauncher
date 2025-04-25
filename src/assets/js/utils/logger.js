@@ -9,11 +9,29 @@ let console_warn = console.warn;
 let console_debug = console.debug;
 let console_error = console.error;
 
+/**
+ * Classe gérant le système de logs personnalisé
+ * @class logger
+ */
 class logger {
+    /**
+     * Crée une nouvelle instance de logger
+     * @constructor
+     * @param {string} name - Le nom du logger
+     * @param {string} color - La couleur des logs
+     */
     constructor(name, color) {
         this.Logger(name, color)
     }
 
+    /**
+     * Configure le système de logs avec un nom et une couleur
+     * @async
+     * @method Logger
+     * @param {string} name - Le nom du logger
+     * @param {string} color - La couleur des logs
+     * @returns {Promise<void>}
+     */
     async Logger(name, color) {
         console.log = (value) => {
             console_log.call(console, `%c[${name}]:`, `color: ${color};`, value);
