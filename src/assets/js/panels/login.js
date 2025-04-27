@@ -30,7 +30,22 @@ class Login {
         this.config = config;
         this.database = await new database().init();
         this.setStaticTexts();
+        await this.updateCancelButtonVisibility();
         this.config.online ? this.getOnline() : this.getOffline();
+    }
+
+    /**
+     * Met à jour la visibilité du bouton d'annulation en fonction du nombre de comptes
+     * @async
+     * @method updateCancelButtonVisibility
+     * @returns {Promise<void>}
+     */
+    async updateCancelButtonVisibility() {
+        const accounts = await this.database.getAll('accounts');
+        const cancelButtons = document.querySelectorAll('.cancel');
+        cancelButtons.forEach(button => {
+            button.style.display = accounts.length > 0 ? 'block' : 'none';
+        });
     }
 
     /**
@@ -362,6 +377,7 @@ class Login {
         await this.database.update({ uuid: "1234", selected: account.uuid }, 'accounts-selected');
         addAccount(account);
         accountSelect(account.uuid);
+        await this.updateCancelButtonVisibility();
         changePanel("home");
         this.refreshData();
     }

@@ -115,6 +115,13 @@ class Settings {
             if (e.target.classList.contains("account-delete")) {
                 this.database.delete(e.path[1].id, 'accounts');
                 document.querySelector('.accounts').removeChild(e.path[1]);
+                
+                const remainingAccounts = await this.database.getAll('accounts');
+                const cancelButtons = document.querySelectorAll('.cancel');
+                cancelButtons.forEach(button => {
+                    button.style.display = remainingAccounts.length > 0 ? 'block' : 'none';
+                });
+
                 if (!document.querySelector('.accounts').children.length) {
                     changePanel("login");
                     return;
