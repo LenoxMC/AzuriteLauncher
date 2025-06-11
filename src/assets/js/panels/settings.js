@@ -4,7 +4,7 @@
 
 'use strict';
 
-import { database, changePanel, accountSelect, Slider, t } from '../utils.js';
+import { database, changePanel, accountSelect, Slider, t, headplayer} from '../utils.js';
 import { initOthers } from '../utils/sharedFunctions.js';
 const dataDirectory = process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Application Support' : process.env.HOME);
 
@@ -38,10 +38,9 @@ class Settings {
         this.initTab();
         this.initAccount();
         this.initRam();
-        this.initLauncherSettings();
-        this.updateModsConfig();
+        this.initLauncherSettings();        this.updateModsConfig();
         this.initOptionalMods();
-        this.headplayer();
+        await this.headplayer();
 
         document.getElementById('uploadSkinButton').addEventListener('click', async () => {
             await this.selectFile();
@@ -671,6 +670,18 @@ class Settings {
             : this.config.azauth.endsWith('/') 
             ? this.config.azauth 
             : `${this.config.azauth}/`;
+    }
+
+    /**
+     * Met à jour l'affichage de la tête du joueur
+     * @async
+     * @method headplayer
+     * @returns {Promise<void>}
+     */
+    async headplayer() {
+        const uuid = (await this.database.get('1234', 'accounts-selected')).value;
+        const account = (await this.database.get(uuid.selected, 'accounts')).value;
+        headplayer(account.name);
     }
 }
 

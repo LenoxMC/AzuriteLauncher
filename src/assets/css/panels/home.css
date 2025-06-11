@@ -138,7 +138,7 @@ body {
 }
 
 .online-indicator.offline {
-    background: #c70707;
+    background-color: #c70707 !important;
 }
 
 .players-count {
@@ -963,3 +963,9 @@ body::-webkit-scrollbar {
 
 
 
+.video-section[style*="display: none"] + .server-status,
+.video-section.hidden + .server-status {
+    top: 100px !important;
+    right: 20px !important;
+    position: fixed !important;
+}

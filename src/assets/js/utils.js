@@ -53,7 +53,8 @@ export {
     addAccount,
     slider as Slider,
     accountSelect,
-    t
+    t,
+    headplayer
 };
 
 /**

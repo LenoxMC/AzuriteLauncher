@@ -84,6 +84,22 @@ class Home {
         }
         this.setServerIcon();
     }
+    async initAdvert() {
+        const advertBanner = document.querySelector('.advert-banner');
+        if (this.config.alert_activate) {
+            const message = this.config.alert_msg;
+            const firstParagraph = message.split('</p>')[0] + '</p>';
+            const scrollingText = document.createElement('div');
+            scrollingText.classList.add('scrolling-text');
+            scrollingText.innerHTML = `${firstParagraph}`;
+            advertBanner.innerHTML = '';
+            advertBanner.appendChild(scrollingText);
+            scrollingText.classList.toggle('no-scroll', !this.config.alert_scroll);
+            advertBanner.style.display = 'block';
+        } else {
+            advertBanner.style.display = 'none';
+        }
+    }
 
     /**
      * Crée un bloc d'actualité
@@ -307,18 +323,26 @@ class Home {
         const statusText = document.getElementById('server-status');
         const playersCount = document.getElementById('players-count');
         const onlineIndicator = document.querySelector('.online-indicator');
-        const serverPing = await new Status(this.config.status.ip, this.config.status.port).getStatus();
 
-        if (!serverPing.error) {
-            statusText.textContent = t('server_online');
-            onlineIndicator.classList.remove('offline');
-            playersCount.textContent = serverPing.playersConnect;
-        } else {
-            statusText.textContent = t('server_unavailable');
+        try {
+            const serverPing = await new Status(this.config.status.ip, this.config.status.port).getStatus();
+
+            if (!serverPing.error) {
+                statusText.textContent = t('server_online');
+                onlineIndicator.classList.remove('offline');
+                onlineIndicator.classList.add('online');
+                playersCount.textContent = serverPing.playersConnect;
+            } else {
+                throw new Error('Ping error');
+            }
+        } catch (error) {
+            statusText.textContent = t('offline');
+            onlineIndicator.classList.remove('online');
             onlineIndicator.classList.add('offline');
             playersCount.textContent = '0';
         }
     }
+
 
     /**
      * Initialise la vidéo YouTube
@@ -326,7 +350,7 @@ class Home {
      * @returns {void}
      */
     initVideo() {
-        const videoContainer = document.querySelector('.ytb');
+        const videoContainer = document.querySelector('.video-section');
         if (!this.config.video_activate) {
             videoContainer.style.display = 'none';
             return;
