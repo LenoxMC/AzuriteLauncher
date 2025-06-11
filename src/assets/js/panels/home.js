@@ -338,14 +338,14 @@ class Home {
 
         if (videoType === 'short') {
             youtubeEmbedUrl = `https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&playsinline=1`;
-        } else if (videoType === 'video') {
+        } else if (videoType === 'normal') {
             youtubeEmbedUrl = `https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1`;
         } else {
             console.error('Invalid video type specified in the configuration.');
             return;
         }
 
-        const youtubeThumbnailUrl = `https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg`;
+        const youtubeThumbnailUrl = `https://img.youtube.com/vi/${youtubeVideoId}/0.jpg`;
         const videoThumbnail = videoContainer.querySelector('.youtube-thumbnail');
         const thumbnailImg = videoThumbnail.querySelector('.thumbnail-img');
         const playButton = videoThumbnail.querySelector('.ytb-play-btn');
