@@ -1,12 +1,12 @@
 {
-    "name": "conflictura",
-    "preductname": "Conflictura Launcher",
-    "version": "3.3.3",
-    "description": "Conflictura modded server launcher",
+    "name": "azurite",
+    "preductname": "Azurite Launcher",
+    "version": "1.0.0",
+    "description": "Launcher d'AzuriteMC",
     "main": "src/app.js",
-    "author": "Riptiaz/Boulldogo/Vexato/Luuxis",
-    "env": "azuriom",
-    "settings": "https://conflictura.eu",
+    "author": "Riptiaz/Boulldogo/Vexato/Luuxis/LenoxMC",
+    "env": "panel",
+    "settings": "https://azurite.azuriom.cloud",
     "scripts": {
         "start": "cross-env-shell NODE_ENV=dev electron .",
         "build": "node build.js --obf=true --build=platform",
@@ -37,6 +37,6 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Riptiaz/CentralCorp-Launcher.git"
+        "url": "git+https://github.com/LenoxMC/AzuriteLauncher.git"
     }
 }
