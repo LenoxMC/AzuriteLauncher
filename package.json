@@ -1,12 +1,12 @@
 {
     "name": "azurite",
     "preductname": "Azurite Launcher",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Launcher d'AzuriteMC",
     "main": "src/app.js",
     "author": "Riptiaz/Boulldogo/Vexato/Luuxis/LenoxMC",
     "env": "panel",
-    "settings": "https://azurite.gamer.gd",
+    "settings": "https://azurite.gamer.gd/",
     "scripts": {
         "start": "cross-env-shell NODE_ENV=dev electron .",
         "build": "node build.js --obf=true --build=platform",
